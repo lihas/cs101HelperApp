@@ -20,9 +20,41 @@ window.onload=function(){
 }
 $(document).ready(function(){
 
+if(localStorage["rollNumberList"]!=undefined){
+    $("#rollNumberList").val(localStorage["rollNumberList"]);
+    $("#gradesList").val(localStorage["gradesList"]);
+    }
+
+    $("#rollNumberList").bind('paste', function(e) {
+        var ctl = $(this);
+        setTimeout(function() {
+            localStorage["rollNumberList"]=$("#rollNumberList").val();
+
+
+        }, 100);
+    });
+
+    $("#gradesList").bind('paste', function(e) {
+        var ctl = $(this);
+        setTimeout(function() {
+            localStorage["gradesList"]=$("#gradesList").val();
+
+
+        }, 100);
+    });
+
+
+    $("#rollNumberList").keydown(function(){
+
+localStorage["rollNumberList"]=$("#rollNumberList").val();
+    });
+
+    $("#gradesList").keydown(function(){
+        localStorage["gradesList"]=$("#gradesList").val();
+    });
 
     $("#enterMarks").click(function(){
-        var rollNumberList1=$("#rollNumberList").val().split("\n");
+        var rollNumberList1=$("#rollNumberList").val().toUpperCase().split("\n");
         var gradeList1=$("#gradesList").val().split("\n");
         var message={rollNumberList:rollNumberList1,gradeList:gradeList1};
         sendMessage(message);
@@ -31,14 +63,27 @@ $(document).ready(function(){
     $("#clear").click(function(){
         $("#rollNumberList").val("");
         $("#gradesList").val("");
+        localStorage.clear();
+
 
     });
+
+    var links = document.getElementsByTagName("a");
+    for (var i = 0; i < links.length; i++) {
+        (function () {
+            var ln = links[i];
+            var location = ln.href;
+            ln.onclick = function () {
+                chrome.tabs.create({active: true, url: location});
+            };
+        })();
+    }
 });
 
 function sendMessage(message) {
     chrome.tabs.query({active: true, currentWindow: true}, function (tabs) {
         chrome.tabs.sendMessage(tabs[0].id, message, function (response) {
-            alert("done, entering the grades!");
+
 
             //process response
         });
