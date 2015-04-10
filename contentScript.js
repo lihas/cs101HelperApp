@@ -1,7 +1,11 @@
 /**
  * Created by neo on 10/4/15.
  */
+
 window.onload=function(){
+
+
+
     console.log("cs101 module init!");
     chrome.runtime.onMessage.addListener(
         function(message, sender, sendResponse) {
@@ -18,6 +22,7 @@ window.onload=function(){
                 biggestTable=tables[i];
             }
             }
+
             console.log(biggestTable);
             for(var j=0;j<biggestTable.childNodes.length;j++){
                 row=biggestTable.childNodes[j];
@@ -31,6 +36,8 @@ window.onload=function(){
                     grade.value=gradeList[index];
                 }
             }
+            alert("done, entering the grades!");
         });
+
 }
 
